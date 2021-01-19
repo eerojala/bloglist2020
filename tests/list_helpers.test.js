@@ -58,7 +58,7 @@ test('dummy returns one', () => {
 })
 
 describe('totalLikes', () => {
-  test('of an empty list is zero', () => {
+  test('returns', () => {
     const emptyBlogs = []  
 
     expect(listHelper.totalLikes(emptyBlogs)).toBe(0)
@@ -72,5 +72,42 @@ describe('totalLikes', () => {
 
   test('of a list of blogs is the sum of of the likes of its entries', () => {
     expect(listHelper.totalLikes(blogs)).toBe(36)
+  })
+})
+
+describe('favouriteBlog', () => {
+  test('of an empty list is null', () => {
+    const emptyBlogs = []
+
+    expect(listHelper.favouriteBlog(emptyBlogs)).toBeNull()
+  })
+
+  test('of a list with one blog is the blog itself', () => {
+    const singleBlog = [{ likes: 3 }]
+
+    expect(listHelper.favouriteBlog(singleBlog)).toEqual(singleBlog[0])
+  })
+
+  test('is the blog with most likes in a list where there is one blog with undisputedly most likes', () => {
+    expect(listHelper.favouriteBlog(blogs)).toEqual(blogs[2])
+  })
+
+  test('is the blog that comes up first in a list where the highest like amount is shared by multiple blogs', () => {
+    const blogs2 = [ 
+      { 
+        title: "title1", 
+        likes: 1 
+      },
+      {
+        title: "title2",
+        likes: 10
+      },
+      {
+        title: "title3",
+        likes: 10
+      } 
+    ]
+
+    expect(listHelper.favouriteBlog(blogs2)).toEqual(blogs2[1])
   })
 })
