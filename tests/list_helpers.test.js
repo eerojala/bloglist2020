@@ -95,19 +95,42 @@ describe('favouriteBlog', () => {
   test('is the blog that comes up first in a list where the highest like amount is shared by multiple blogs', () => {
     const blogs2 = [ 
       { 
-        title: "title1", 
-        likes: 1 
+        title: "title1", likes: 1 
       },
       {
-        title: "title2",
-        likes: 10
+        title: "title2", likes: 10
       },
       {
-        title: "title3",
-        likes: 10
+        title: "title3", likes: 10
       } 
     ]
 
     expect(listHelper.favouriteBlog(blogs2)).toEqual(blogs2[1])
+  })
+})
+
+describe('mostBlogs', () => {
+  test('returns null with an empty list', () => {
+    const emptyBlogs = []
+
+    expect(listHelper.mostBlogs(emptyBlogs)).toBeNull()
+  })
+
+  test('returns the only author in a list with a single blog', () => {
+    const singleBlog = [{ author: 'Eero Ojala' }]
+
+    expect(listHelper.mostBlogs(singleBlog)).toEqual({ author: 'Eero Ojala', blogs: 1 })
+  })
+
+  test('returns the author with the most blogs in a list of blogs', () => {
+    expect(listHelper.mostBlogs(blogs)).toEqual({ author: "Robert C. Martin", blogs: 3 })
+  })
+
+  test('returns the author which is prior in the list when the highest blog amount is shared by multiple authors', () => {
+    const blogs2 = [ 
+      { author: 'author1' }, { author: 'author2' }, { author: 'author2' } , { author: 'author3' }, { author: 'author3' }   
+    ]
+
+    expect(listHelper.mostBlogs(blogs2)).toEqual({ author: 'author2', blogs: 2 })
   })
 })
