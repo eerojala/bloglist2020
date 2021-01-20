@@ -7,7 +7,7 @@ blogsRouter.get('', async (request, response) => {
   response.json(blogs.map(blog => blog.toJSON()))
 })
   
-blogsRouter.post('', async (request, response) => {
+blogsRouter.post('', async (request, response, next) => {
   const body = request.body
 
   const blog = new Blog({

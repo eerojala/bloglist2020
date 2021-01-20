@@ -90,6 +90,48 @@ test('if no likes are provided then a new blog is created with likes: 0', async 
   expect(savedNote.likes).toBe(0)
 })
 
+test('if no tile is provided then no new blog is created and the server returns status code 400', async () => {
+  const newBlog = {
+    author: 'No Title',
+    url: 'notitle.com'
+  }
+
+  const blogsBefore = await helper.blogsInDb();
+
+  const response = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+
+  expect(response.body.error).toBe('Blog validation failed: title: Path `title` is required.')  
+  
+  const blogsAfter = await helper.blogsInDb();
+
+  expect(blogsAfter).toEqual(blogsBefore)
+})
+
+test('if no url is provided then no new blog is created and the server returns status code 400', async () => {
+  const newBlog = {
+    title: 'No URL!',
+    author: 'No Url'
+  }
+
+  const blogsBefore = await helper.blogsInDb();
+
+  const response = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+
+    expect(response.body.error).toBe('Blog validation failed: url: Path `url` is required.')
+
+    const blogsAfter = await helper.blogsInDb()
+
+    expect(blogsAfter).toEqual(blogsBefore)
+})
+
 afterAll(() => {
   mongoose.connection.close() // remember to close the database connection after all tests
   // NOTE: if we run individual tests which do not utilize the database, the mongoose connection may remain open (because apparently in this case jest will not run the code in afterAll())
