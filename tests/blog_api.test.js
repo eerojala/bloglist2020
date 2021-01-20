@@ -170,6 +170,40 @@ describe('DELETE /api/blogs/:id', () => {
   })
 })
 
+describe('PUT /api/blogs/:id', () => {
+  test('updates the blog matching the id with the given fields', async () => {
+    const blogsBefore = await helper.blogsInDb()
+
+    const blogToUpdate = blogsBefore[1]
+
+    const updates = {
+      title: 'Updated Title',
+      author: 'Updated Author',
+      url: 'updated.url',
+      likes: 100
+    }
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updates)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAfter = await helper.blogsInDb()
+
+    expect(blogsAfter).not.toEqual(blogsBefore)
+    expect(blogsAfter.length).toBe(blogsBefore.length)
+
+    const updatedBlog = await helper.getBlogFromDb(blogToUpdate.id)
+
+    expect(updatedBlog).not.toEqual(blogToUpdate)
+    expect(updatedBlog.title).toBe(updates.title)
+    expect(updatedBlog.author).toBe(updates.author)
+    expect(updatedBlog.url).toBe(updates.url)
+    expect(updatedBlog.likes).toBe(updates.likes)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close() // remember to close the database connection after all tests
   // NOTE: if we run individual tests which do not utilize the database, the mongoose connection may remain open (because apparently in this case jest will not run the code in afterAll())
