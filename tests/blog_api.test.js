@@ -70,6 +70,26 @@ test('a valid blog can be added', async () => {
   expect(blogsWithoutIds).toContainEqual(newBlog)
 })
 
+test('if no likes are provided then a new blog is created with likes: 0', async () => {
+  const newBlog = {
+    title: 'no likes',
+    author: 'author no one likes',
+    url: 'url no one liked'
+  }
+
+  const response = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const savedNote = await helper.getBlogFromDb(response.body.id)
+
+  expect(savedNote).toBeDefined
+  expect(savedNote.likes).toBeDefined
+  expect(savedNote.likes).toBe(0)
+})
+
 afterAll(() => {
   mongoose.connection.close() // remember to close the database connection after all tests
   // NOTE: if we run individual tests which do not utilize the database, the mongoose connection may remain open (because apparently in this case jest will not run the code in afterAll())

@@ -27,6 +27,10 @@ const blogsInDb = async () => {
   return blogs.map(blog => blog.toJSON())
 }
 
+const getBlogFromDb = async (id) => {
+  return await Blog.findById(id)
+}
+
 const removeIds = (objects) => {
   const copies = objects.map(o => {
     const copy = {...o} // create a new object with fields copied from 0
@@ -44,5 +48,5 @@ const removeIds = (objects) => {
 }
 
 module.exports = {
-  initialBlogs, blogsInDb, removeIds
+  initialBlogs, blogsInDb, getBlogFromDb, removeIds
 }
