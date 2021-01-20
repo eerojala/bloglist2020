@@ -6,6 +6,10 @@ require('dotenv').config()
 let PORT = process.env.PORT // heroku has a PORT environment variable automatically
 let MONGODB_URI = process.env.MONGODB_URI // NEVER save database credientals into code, must be set manually to heroku
 
+if (process.env.NODE_eNV === 'test') { // If running in a test environment
+  MONGODB_URI = process.env.TEST_MONGODB_URI // use the test database instead
+}
+
 module.exports = {
   MONGODB_URI,
   PORT
