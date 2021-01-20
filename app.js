@@ -6,9 +6,6 @@ const morgan = require('morgan')
 const blogsRouter = require('./controllers/blogs')
 const mongoose = require('mongoose')
 
-
-
-
 const logger = require('./utils/logger')
 const middleware = require('./utils/middleware')
 
