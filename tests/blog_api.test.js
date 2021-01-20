@@ -1,30 +1,13 @@
 const { TestScheduler } = require('jest')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
+const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app) // app.js contains no code for actually starting the application, but supertest is able to start it in an internal port it uses
+
 const Blog = require('../models/blog')
 
-const initialBlogs = [
-  {
-    title: "title1",
-    author: "author1",
-    url: "url1",
-    likes: 0
-  },
-  {
-    title: "title2",
-    author: "author2",
-    url: "url2",
-    likes: 5
-  },
-  {
-    title: "title3",
-    author: "author3",
-    url: "url3",
-    likes: 10
-  },
-]
+const initialBlogs = helper.initialBlogs
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -59,11 +42,32 @@ test('all returned blog have field id instead of _id', async () => {
   expect(ids[0]).toBeDefined()
   expect(ids[1]).toBeDefined()
   expect(ids[2]).toBeDefined()
-  
+
   expect(_ids).toHaveLength(3)
   expect(_ids[0]).toBeUndefined()
   expect(_ids[1]).toBeUndefined()
   expect(_ids[2]).toBeUndefined()
+})
+
+test('a valid blog can be added', async () => {
+  const newBlog = {
+    title: 'newTitle',
+    author: 'newAuthor',
+    url: 'newUrl',
+    likes: 7
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  const blogsWithoutIds = helper.removeIds(blogsAtEnd)
+  expect(blogsAtEnd).toHaveLength(initialBlogs.length + 1)
+  expect(blogsWithoutIds).toContainEqual(newBlog)
 })
 
 afterAll(() => {
