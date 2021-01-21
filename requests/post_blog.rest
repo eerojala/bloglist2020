@@ -2,5 +2,5 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Hello world", "author": "Eero Ojala", "url": "http://localhost:3001/api/entries", "likes": 9 
+    "title": "Hello world 2", "author": "Eero Ojala", "url": "http://localhost:3001/api/blogs", "likes": 12
 }
