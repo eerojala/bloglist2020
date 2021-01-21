@@ -1,4 +1,3 @@
-const { TestScheduler } = require('jest')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const helper = require('./test_helper')

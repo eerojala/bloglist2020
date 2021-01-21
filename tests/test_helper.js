@@ -1,4 +1,5 @@
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const initialBlogs = [
   {
@@ -31,6 +32,16 @@ const getBlogFromDb = async (id) => {
   return await Blog.findById(id)
 }
 
+const usersInDb = async () => {
+  const users = await User.find({})
+
+  return users.map(user => user.toJSON())
+}
+
+const getUserFromDb = async (id) => {
+  return await User.findById(id)
+}
+
 const removeIds = (objects) => {
   const copies = objects.map(o => {
     const copy = {...o} // create a new object with fields copied from 0
@@ -48,5 +59,5 @@ const removeIds = (objects) => {
 }
 
 module.exports = {
-  initialBlogs, blogsInDb, getBlogFromDb, removeIds
+  initialBlogs, blogsInDb, getBlogFromDb, usersInDb, getUserFromDb, removeIds
 }

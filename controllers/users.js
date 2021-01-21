@@ -14,6 +14,11 @@ usersRouter.get('/', async (request, response, next) => {
 
 usersRouter.post('/', async (request, response, next) => {
   const body = request.body
+  const password = body.password
+
+  if (!password || password.length < 3) {
+    next({ name: 'ValidationError', message: 'No password given or the given password is too short (below 3 characters).' })
+  }
 
   try {
     const saltRounds = 10
