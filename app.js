@@ -6,6 +6,7 @@ const morgan = require('morgan')
 const mongoose = require('mongoose')
 
 const blogsRouter = require('./controllers/blogs')
+const loginRouter = require('./controllers/login')
 const usersRouter = require('./controllers/users')
 
 const config = require('./utils/config')
@@ -51,6 +52,7 @@ app.use(morgan(':method :url :status :response-time ms :body')) // Logs HTTP req
 
 // Regular routes:
 app.use('/api/blogs', blogsRouter)
+app.use('/api/login', loginRouter)
 app.use('/api/users', usersRouter)
 
 // Unknown endpoint route

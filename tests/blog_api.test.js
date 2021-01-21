@@ -84,8 +84,10 @@ describe('POST /api/blogs', () => {
     const blogsAtEnd = await helper.blogsInDb()
   
     const blogsWithoutIds = helper.removeIds(blogsAtEnd)
+    const blogsWithoutIdsAndUsers = helper.removeUsers(blogsWithoutIds)
+
     expect(blogsAtEnd).toHaveLength(initialBlogs.length + 1)
-    expect(blogsWithoutIds).toContainEqual(newBlog)
+    expect(blogsWithoutIdsAndUsers).toContainEqual(newBlog)
   })
   
   test('if no likes are provided then a new blog is created with likes: 0', async () => {

@@ -6,7 +6,7 @@ const initialBlogs = [
     title: "title1",
     author: "author1",
     url: "url1",
-    likes: 0
+    likes: 0,
   },
   {
     title: "title2",
@@ -58,6 +58,17 @@ const removeIds = (objects) => {
   return copies 
 }
 
+const removeUsers = (objects) => {
+  const copies = objects.map(o => {
+    const copy = {...o}
+    delete copy.user
+
+    return copy
+  })
+
+  return copies
+}
+
 module.exports = {
-  initialBlogs, blogsInDb, getBlogFromDb, usersInDb, getUserFromDb, removeIds
+  initialBlogs, blogsInDb, getBlogFromDb, usersInDb, getUserFromDb, removeIds, removeUsers
 }
