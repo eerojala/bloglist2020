@@ -49,6 +49,7 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, us
 app.use(cors()) // Allows requests from other origins (CORS), so axios (in the front-end) can get fetch data from this back-end
 app.use(express.json()) // Takes the JSON data that came with the request, transforms it into an object and sets it as the body field of the request object
 app.use(morgan(':method :url :status :response-time ms :body')) // Logs HTTP requests
+app.use(middleware.tokenExtractor) // Extracts the token from request header Authorization and sets it to request.token
 
 // Regular routes:
 app.use('/api/blogs', blogsRouter)
