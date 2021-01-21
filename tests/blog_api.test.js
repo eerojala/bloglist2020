@@ -230,7 +230,33 @@ describe('When the user is logged in', async () => {
       expect(blogsAfter).not.toContainEqual(blogToRemove)
     })
   })
+})
 
+describe('When the user is NOT logged in', () => {
+  describe('POST /api/blog/:id', () => {
+    test('a valid blog cannot be added', async () => {
+      const blogsBefore = await helper.blogsInDb()
+
+      const newBlog = {
+        title: 'newTitle',
+        author: 'newAuthor',
+        url: 'newUrl',
+        likes: 7
+      }
+    
+      const response = await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(401)
+        .expect('Content-Type', /application\/json/)
+
+      expect(response.body.error).toBe('invalid token')
+    
+      const blogsAfter = await helper.blogsInDb()
+
+      expect(blogsBefore).toEqual(blogsAfter)
+    })
+  })
 })
 
 afterAll(() => {
