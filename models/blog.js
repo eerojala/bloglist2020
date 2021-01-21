@@ -10,7 +10,11 @@ const blogSchema = new mongoose.Schema({
     type:String,
     required: true
   },
-  likes: Number
+  likes: Number,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }
 })
 
 blogSchema.set('toJSON', { // this is done so that the id is returned in field 'id' instead of '_id' and field __v is not returned at all

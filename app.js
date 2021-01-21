@@ -1,11 +1,14 @@
-const config = require('./utils/config')
+
 const express = require('express')
 const app = express()
 const cors = require('cors')
 const morgan = require('morgan')
-const blogsRouter = require('./controllers/blogs')
 const mongoose = require('mongoose')
 
+const blogsRouter = require('./controllers/blogs')
+const usersRouter = require('./controllers/users')
+
+const config = require('./utils/config')
 const logger = require('./utils/logger')
 const middleware = require('./utils/middleware')
 
@@ -48,6 +51,7 @@ app.use(morgan(':method :url :status :response-time ms :body')) // Logs HTTP req
 
 // Regular routes:
 app.use('/api/blogs', blogsRouter)
+app.use('/api/users', usersRouter)
 
 // Unknown endpoint route
 app.use(middleware.unknownEndpoint)
