@@ -68,7 +68,7 @@ blogsRouter.delete('/:id', async (request, response, next) => {
 blogsRouter.put('/:id', async (request, response, next) => {
   const body = request.body
 
-  const blog = { // note that the user who uploaded the blog is not updated
+  const blog = {
     title: body.title,
     author: body.author,
     url: body.url,
@@ -76,7 +76,19 @@ blogsRouter.put('/:id', async (request, response, next) => {
   }
 
   try {
-    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true }) // new: true returns the updated blog, new: false returns the original blog before the updates are appleid
+    const user = await User.findById(body.user.id)
+    
+    if (!user) {
+      return response.status(400).json({ error: 'No user found matching id' })
+    }
+
+    blog.user = user._id
+
+    // new: true returns the updated blog, new: false returns the original blog before the updates are appleid
+    const updatedBlog = 
+      await Blog
+        .findByIdAndUpdate(request.params.id, blog, { new: true })
+        .populate('user', { username: 1, name: 1 })
     
     response.json(updatedBlog.toJSON())
   } catch (exception) {
