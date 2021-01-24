@@ -76,7 +76,8 @@ describe('PUT /api/blogs/:id', () => {
       title: 'Updated Title',
       author: 'Updated Author',
       url: 'updated.url',
-      likes: 100
+      likes: 100,
+      user: '6009af7f24aa9a2c18628c35' // id of user1
     }
 
     await api

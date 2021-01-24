@@ -76,15 +76,16 @@ blogsRouter.put('/:id', async (request, response, next) => {
   }
 
   try {
-    const user = await User.findById(body.user.id)
+    const user = await User.findById(body.user)
     
     if (!user) {
       return response.status(400).json({ error: 'No user found matching id' })
     }
 
-    blog.user = user._id
+    blog.user = user._id // note: the user id cannot be a string, it needs to be a mongoose id object
 
-    // new: true returns the updated blog, new: false returns the original blog before the updates are appleid
+    // new: true returns the updated blog
+    // new: false returns the original blog before the updates were applied (this is the default behaviour)
     const updatedBlog = 
       await Blog
         .findByIdAndUpdate(request.params.id, blog, { new: true })
