@@ -68,7 +68,7 @@ blogsRouter.delete('/:id', async (request, response, next) => {
 blogsRouter.put('/:id', async (request, response, next) => {
   const body = request.body
 
-  const blog = {
+  const blog = { // note that the user who uploaded the blog is not updated
     title: body.title,
     author: body.author,
     url: body.url,
@@ -77,7 +77,7 @@ blogsRouter.put('/:id', async (request, response, next) => {
 
   try {
     const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true }) // new: true returns the updated blog, new: false returns the original blog before the updates are appleid
-    console.log(updatedBlog)
+    
     response.json(updatedBlog.toJSON())
   } catch (exception) {
     next(exception)
