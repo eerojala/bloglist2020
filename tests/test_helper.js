@@ -1,3 +1,5 @@
+const bcryptjs = require('bcryptjs')
+
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
@@ -58,7 +60,7 @@ const removeIds = (objects) => {
   return copies 
 }
 
-const removeUsers = (objects) => {
+const removeUserFields = (objects) => {
   const copies = objects.map(o => {
     const copy = {...o}
     delete copy.user
@@ -69,6 +71,21 @@ const removeUsers = (objects) => {
   return copies
 }
 
+const saveUser = async ({ username, name, password }) => {
+  const passwordHash = await bcryptjs.hash(password, 10)
+
+  const user = new User({ username: username, name: name, passwordHash: passwordHash })
+
+  return await user.save()
+}
+
 module.exports = {
-  initialBlogs, blogsInDb, getBlogFromDb, usersInDb, getUserFromDb, removeIds, removeUsers
+  initialBlogs, 
+  blogsInDb, 
+  getBlogFromDb, 
+  usersInDb, 
+  getUserFromDb, 
+  removeIds, 
+  removeUserFields,
+  saveUser
 }

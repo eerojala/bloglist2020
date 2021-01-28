@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
-const bcryptjs = require('bcryptjs')
 const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app) // app.js contains no code for actually starting the application, but supertest is able to start it in an internal port it uses
@@ -8,26 +7,8 @@ const api = supertest(app) // app.js contains no code for actually starting the 
 const User = require('../models/user')
 
 beforeEach(async () => {
-  // await User.deleteMany({}) we do not use this because we want to keep user3 and user4 in the the test database for testing the blog api
-
-  const passwordHash1 = await bcryptjs.hash('salasana', 10)
-  const passwordHash2 = await bcryptjs.hash('password', 10)
-  // const passwordHash3 = await bcryptjs.hash('password1', 10)
-  // const passwordHash4 = await bcryptjs.hash('password2', 10)
-
-  const user1 = new User({ username: 'eerojala', name: 'Eero Ojala', passwordHash: passwordHash1 })
-  const user2 = new User({ username: 'eeeeeee', name: 'Matti Meikäläinen', passwordHash: passwordHash2 })
-  // const user3 = new User({ username: 'user1', name: 'User 1', passwordHash: passwordHash3 })
-  // const user4 = new User({ username: 'user2', name: 'User 2', passwordHash: passwordHash4 })
-
-  await User.remove({ username: 'eerojala' })
-  await User.remove({ username: 'eeeeeee' })
-  await User.remove({ username: 'newusr' })
-
-  await user1.save()
-  await user2.save()
-  // await user3.save()
-  // await user4.save()
+  await User.deleteMany({})
+  await helper.saveUser({ username: 'eerojala', name: 'Eero Ojala',  password: 'salasana' })
 })
 
 describe('POST /api/users', () => {
